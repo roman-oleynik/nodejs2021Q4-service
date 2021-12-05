@@ -1,6 +1,8 @@
-const getAll = async () => {
+const { users } = require("../../data/data");
+
+const getAll = async () =>
   // TODO: mock implementation. should be replaced during task development
-  return [];
-};
+   users
+;
 
 module.exports = { getAll };
