@@ -1,64 +1,7 @@
-// const express = require('express');
-// const swaggerUI = require('swagger-ui-express');
-// const path = require('path');
-// const YAML = require('yamljs');
-// const userRouter = require('./resources/users/user.router');
-// const boardRouter = require('./resources/boards/board.router');
-// const taskRouter = require('./resources/tasks/task.router');
 const http = require("http");
 const { v1, validate } = require('uuid');
 const data = require("./data/data");
-
-const isValid = (person) => {
-  if (!validate(person.id) && person.boardId !== null) {
-      return false;
-  }
-  if (!person.name) {
-      return false;
-  }
-  if (!person.login) {
-      return false;
-  }
-  if (!person.password) {
-      return false;
-  }
-  return true;
-};
-
-const isBoardValid = (person) => {
-  if (!validate(person.id)) {
-      return false;
-  }
-  if (!person.title) {
-      return false;
-  }
-  if (!person.columns) {
-      return false;
-  }
-  return true;
-};
-
-const isTaskValid = (person) => {
-  if (!validate(person.id)) {
-      return false;
-  }
-  if (!person.title) {
-      return false;
-  }
-  if (!person.order && typeof person.order !== "number") {
-      return false;
-  }
-  if (!person.description) {
-    return false;
-  }
-  if (!person.userId && person.userId !== null) {
-    return false;
-  }
-  if (!person.boardId && person.boardId !== null) {
-    return false;
-  }
-  return true;
-};
+const { isBoardValid, isUserValid, isTaskValid } = require('./resources/validators/validators');
 
 
 const app = (req, res) => {
@@ -79,7 +22,7 @@ const app = (req, res) => {
               if (person) {
                   res.statusCode = 400;
                   res.end("Error: Person with this id already exists");
-              } else if (!isValid(parsedBody)) {
+              } else if (!isUserValid(parsedBody)) {
                   res.statusCode = 400;
                   res.end("Error: Person's data is invalid");
               } else {
@@ -306,12 +249,6 @@ const app = (req, res) => {
           res.statusCode = 404;
           res.end("Error: Invalid request");
       }
-
-      
-      
-      // setTimeout(() => {
-      //     res.end();
-      // })
   } catch (err) {
       res.statusCode = 500;
       res.end("Error: Internal server error!");
