@@ -23,7 +23,8 @@ const remove = async id => {
   users.splice(indexOfUserById, 1);
   tasks.forEach(el => {
     if (el.userId === id) {
-      el.userId = null; // eslint-disable-line no-param-reassign
+      const element = el;
+      element.userId = null;
     }
   })
   return {};
