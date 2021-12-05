@@ -1,24 +1,24 @@
 const users = [
     {
-        id: "1",
+        id: "123e4567-e89b-12d3-a456-426614174001",
         name: "Roman",
         login: "roman-oleynik",
         password: "123qwe"
     },
     {
-        id: "2",
+        id: "123e4567-e89b-12d3-a456-426614174000",
         name: "Ivan",
         login: "ivan3421",
         password: "123qwer"
     },
     {
-        id: "3",
+        id: "123e4567-e89b-12d3-a456-426614174002",
         name: "Selena",
         login: "selena8",
         password: "ssl123456"
     },
     {
-        id: "4",
+        id: "123e4567-e89b-12d3-a456-426614174003",
         name: "Ken",
         login: "ken-superman",
         password: "123qwe"
@@ -27,7 +27,7 @@ const users = [
 
 const boards = [
     {
-        id: "b1",
+        id: "123e4567-e89b-12d3-a456-426614174004",
         title: "some board",
         columns: [
             {
@@ -48,7 +48,7 @@ const boards = [
         ]
     },
     {
-        id: "b2",
+        id: "123e4567-e89b-12d3-a456-426614174005",
         title: "some board 2",
         columns: [
             {
@@ -69,7 +69,7 @@ const boards = [
         ]
     },
     {
-        id: "b3",
+        id: "123e4567-e89b-12d3-a456-426614174006",
         title: "some board 3",
         columns: [
             {
@@ -90,7 +90,7 @@ const boards = [
         ]
     },
     {
-        id: "b4",
+        id: "123e4567-e89b-12d3-a456-426614174007",
         title: "some board 4",
         columns: [
             {
@@ -114,39 +114,39 @@ const boards = [
 
 const tasks = [
     {
-        id: "t1",
+        id: "123e4567-e89b-12d3-a456-426614174008",
         title: "Make a form for the website",
         order: "0",
         description: "make form that has 3 inputs and a submit button",
-        userId: "1", // assignee
-        boardId: "b1",
+        userId: "123e4567-e89b-12d3-a456-426614174001", // assignee
+        boardId: "123e4567-e89b-12d3-a456-426614174004",
         columnId: "b1c1"
     },
     {
-        id: "t2",
+        id: "123e4567-e89b-12d3-a456-426614174009",
         title: "Make a mainscreen for the website",
         order: "1",
         description: "make it faster",
-        userId: "1", // assignee
-        boardId: "b1",
+        userId: "123e4567-e89b-12d3-a456-426614174001", // assignee
+        boardId: "123e4567-e89b-12d3-a456-426614174006",
         columnId: "b1c1"
     },
     {
-        id: "t3",
+        id: "123e4567-e89b-12d3-a456-426614174010",
         title: "Make a header for the website",
         order: "0",
         description: "make a beautiful header",
-        userId: "1", // assignee
-        boardId: "b1",
+        userId: "123e4567-e89b-12d3-a456-426614174001", // assignee
+        boardId: "123e4567-e89b-12d3-a456-426614174004",
         columnId: "b1c2"
     },
     {
-        id: "t4",
+        id: "123e4567-e89b-12d3-a456-426614174011",
         title: "Make a logo for the website",
         order: "0",
         description: "make a beautiful header",
-        userId: "1", // assignee
-        boardId: "b1",
+        userId: "123e4567-e89b-12d3-a456-426614174000", // assignee
+        boardId: "123e4567-e89b-12d3-a456-426614174005",
         columnId: "b1c3"
     },
 ];
