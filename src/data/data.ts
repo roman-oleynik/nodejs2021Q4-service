@@ -1,6 +1,6 @@
+import { User, Board, Task } from "../types/types";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const users = [
+const users: User[] = [
     {
         id: "123e4567-e89b-12d3-a456-426614174001",
         name: "Roman",
@@ -26,7 +26,8 @@ const users = [
         password: "123qwe"
     },
 ];
-const boards = [
+
+const boards: Board[] = [
     {
         id: "123e4567-e89b-12d3-a456-426614174004",
         title: "some board",
@@ -112,13 +113,14 @@ const boards = [
         ]
     },
 ];
-const tasks = [
+
+const tasks: Task[] = [
     {
         id: "123e4567-e89b-12d3-a456-426614174008",
         title: "Make a form for the website",
         order: "0",
         description: "make form that has 3 inputs and a submit button",
-        userId: "123e4567-e89b-12d3-a456-426614174001",
+        userId: "123e4567-e89b-12d3-a456-426614174001", // assignee
         boardId: "123e4567-e89b-12d3-a456-426614174004",
         columnId: "b1c1"
     },
@@ -127,7 +129,7 @@ const tasks = [
         title: "Make a mainscreen for the website",
         order: "1",
         description: "make it faster",
-        userId: "123e4567-e89b-12d3-a456-426614174001",
+        userId: "123e4567-e89b-12d3-a456-426614174001", // assignee
         boardId: "123e4567-e89b-12d3-a456-426614174006",
         columnId: "b1c1"
     },
@@ -136,7 +138,7 @@ const tasks = [
         title: "Make a header for the website",
         order: "0",
         description: "make a beautiful header",
-        userId: "123e4567-e89b-12d3-a456-426614174001",
+        userId: "123e4567-e89b-12d3-a456-426614174001", // assignee
         boardId: "123e4567-e89b-12d3-a456-426614174004",
         columnId: "b1c2"
     },
@@ -145,11 +147,12 @@ const tasks = [
         title: "Make a logo for the website",
         order: "0",
         description: "make a beautiful header",
-        userId: "123e4567-e89b-12d3-a456-426614174000",
+        userId: "123e4567-e89b-12d3-a456-426614174000", // assignee
         boardId: "123e4567-e89b-12d3-a456-426614174005",
         columnId: "b1c3"
     },
 ];
+
 module.exports = {
     users,
     boards,

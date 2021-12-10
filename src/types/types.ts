@@ -41,12 +41,15 @@ export type RequestObject = {
     params: {
         userId?: string
         boardId?: string
+        taskId?: string
     }
     body: object
+    baseUrl: string
 }
 
 type StatusObject = {
     status: number
+    error?: unknown
 }
 type TrelloData = UserOutput[] | Board[] | Task[] | UserOutput | Board | Task;
 export type ResultObject = {
