@@ -23,7 +23,6 @@ const remove = async (id) => {
             const item = el;
             item.userId = null;
         }
-        return el;
     });
     return {};
 };

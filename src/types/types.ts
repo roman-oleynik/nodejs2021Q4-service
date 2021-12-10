@@ -23,6 +23,7 @@ export type Board = {
     title: string
     columns: Column[]
 }
+export type BoardOutput = Board;
 
 export type Task = {
     id: string
@@ -33,17 +34,23 @@ export type Task = {
     boardId: string
     columnId: string
 }
+export type TaskOutput = Task;
 
 export type RequestObject = {
     originalUrl: string
     params: {
         userId?: string
+        boardId?: string
     }
     body: object
 }
 
+type StatusObject = {
+    status: number
+}
+type TrelloData = UserOutput[] | Board[] | Task[] | UserOutput | Board | Task;
 export type ResultObject = {
-    send: (arg: string) => void
-    json: (arg: UserOutput[] | Board[] | Task[] | UserOutput | Board | Task) => void
+    send: (arg: string | StatusObject) => void
+    json: (arg: TrelloData) => void
     status: (arg: number) => ResultObject
 }

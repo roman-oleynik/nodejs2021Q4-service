@@ -28,7 +28,6 @@ const remove: (id: string) => Promise<object> = async id => {
       const item = el;
       item.userId = null;
     }
-    return el;
   })
   return {};
 };
