@@ -4,14 +4,18 @@
     "display": "Node 16",
 
     "compilerOptions": {
-        "lib": ["es2021"],
+        "lib": ["es2015"],
         "module": "commonjs",
-        "target": "es2021",
+        "target": "es2015",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "noImplicitAny": true
+    },
+    "typedocOptions": {
+        "entryPoints": ["src/server.ts"],
+        "out": "docs"
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts"]

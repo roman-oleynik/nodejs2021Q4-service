@@ -8,7 +8,7 @@
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2021,
+    "ecmaVersion": 2015,
     "ecmaFeatures": {
       "impliedStrict": true
     }
@@ -32,9 +32,12 @@
     "no-underscore-dangle": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-var-requires": "off"
+    "@typescript-eslint/no-var-requires": "off",
+    "tsdoc/syntax": "warn"
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@typescript-eslint/eslint-plugin",
+    "eslint-plugin-tsdoc"
   ]
 }

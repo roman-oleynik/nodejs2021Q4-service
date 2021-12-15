@@ -1,15 +1,15 @@
-import {RequestObject, ResultObject} from "../../types/types";
+import {RequestObject, ResponseObject} from "../../types/types";
 
 const router = require('express').Router();
 const Board = require('./board.model');
 const boardsService = require('./board.service');
 // GET
-router.route('/').get(async (req: RequestObject, res: ResultObject) => {
+router.route('/').get(async (req: RequestObject, res: ResponseObject) => {
   const boards = await boardsService.getAll();
   res.json(boards.map(Board.toResponse));
 });
 
-router.route('/:boardId').get(async (req: RequestObject, res: ResultObject) => {
+router.route('/:boardId').get(async (req: RequestObject, res: ResponseObject) => {
   const { boardId } = await req.params;
   try {
     const board = await boardsService.get(boardId);
@@ -22,7 +22,7 @@ router.route('/:boardId').get(async (req: RequestObject, res: ResultObject) => {
 });
 
 // POST
-router.route('/').post(async (req: RequestObject, res: ResultObject) => {
+router.route('/').post(async (req: RequestObject, res: ResponseObject) => {
   const { body } = req;
   const addedBoard = new Board({...body});
   boardsService.add(addedBoard);
@@ -30,7 +30,7 @@ router.route('/').post(async (req: RequestObject, res: ResultObject) => {
 });
 
 // PUT
-router.route('/:boardId').put(async (req: RequestObject, res: ResultObject) => {
+router.route('/:boardId').put(async (req: RequestObject, res: ResponseObject) => {
   const { boardId } = await req.params;
   const { body } = req;
   await boardsService.put(boardId, body);
@@ -38,7 +38,7 @@ router.route('/:boardId').put(async (req: RequestObject, res: ResultObject) => {
 });
 
 // DELETE
-router.route('/:boardId').delete(async (req: RequestObject, res: ResultObject) => {
+router.route('/:boardId').delete(async (req: RequestObject, res: ResponseObject) => {
   const { boardId } = await req.params;
   try {
     const deletingResult = await boardsService.remove(boardId);

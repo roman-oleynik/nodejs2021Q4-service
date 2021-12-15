@@ -1,11 +1,11 @@
-import { RequestObject, ResultObject } from "../../types/types";
+import { RequestObject, ResponseObject } from "../../types/types";
 
 const router = require('express').Router();
 const Task = require('./task.model');
 const tasksService = require('./task.service');
 
 // GET
-router.route('/').get(async (req: RequestObject, res: ResultObject) => {
+router.route('/').get(async (req: RequestObject, res: ResponseObject) => {
   const boardId = req.baseUrl.split("/").slice(2,3).join("");
 
   try {
@@ -18,7 +18,7 @@ router.route('/').get(async (req: RequestObject, res: ResultObject) => {
   }
 });
 
-router.route('/:taskId').get(async (req: RequestObject, res: ResultObject) => {
+router.route('/:taskId').get(async (req: RequestObject, res: ResponseObject) => {
   const { taskId } = await req.params;
   try {
     const task = await tasksService.get(taskId);
@@ -31,7 +31,7 @@ router.route('/:taskId').get(async (req: RequestObject, res: ResultObject) => {
 });
 
 // POST
-router.route('/').post(async (req: RequestObject, res: ResultObject) => {
+router.route('/').post(async (req: RequestObject, res: ResponseObject) => {
   const { body } = req;
   const boardId = req.baseUrl.split("/").slice(2,3).join("");
   const addedTask = new Task({...body, boardId});
@@ -40,7 +40,7 @@ router.route('/').post(async (req: RequestObject, res: ResultObject) => {
 });
 
 // PUT
-router.route('/:taskId').put(async (req: RequestObject, res: ResultObject) => {
+router.route('/:taskId').put(async (req: RequestObject, res: ResponseObject) => {
   const { taskId } = await req.params;
   const { body } = req;
   await tasksService.put(taskId, body);
@@ -48,7 +48,7 @@ router.route('/:taskId').put(async (req: RequestObject, res: ResultObject) => {
 });
 
 // DELETE
-router.route('/:taskId').delete(async (req: RequestObject, res: ResultObject) => {
+router.route('/:taskId').delete(async (req: RequestObject, res: ResponseObject) => {
   const { taskId } = await req.params;
   try {
     const deletingResult = await tasksService.removeTask(taskId);

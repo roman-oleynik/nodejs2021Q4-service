@@ -1,4 +1,4 @@
-import {RequestObject, ResultObject} from "./types/types";
+import {RequestObject, ResponseObject} from "./types/types";
 
 const express = require('express');
 const swaggerUI = require('swagger-ui-express');
@@ -16,8 +16,10 @@ app.use(express.json());
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
-
-app.use('/', (req: RequestObject, res: ResultObject, next: () => void) => {
+/**
+   * Returns the User by id.
+   */
+app.use('/', (req: RequestObject, res: ResponseObject, next: () => void) => {
   if (req.originalUrl === '/') {
     res.send('Service is running!');
     return;
