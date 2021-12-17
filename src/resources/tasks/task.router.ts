@@ -9,7 +9,7 @@ router.route('/').get(async (req: RequestObject, res: ResponseObject) => {
   const boardId = req.baseUrl.split("/").slice(2,3).join("");
 
   try {
-    const tasks = await tasksService.getAllByBoardId(boardId);
+    const tasks = await tasksService.getAll(boardId);
     res.json(tasks.map(Task.toResponse));
   } catch (err) {
     res.status(404).send({
@@ -51,7 +51,7 @@ router.route('/:taskId').put(async (req: RequestObject, res: ResponseObject) => 
 router.route('/:taskId').delete(async (req: RequestObject, res: ResponseObject) => {
   const { taskId } = await req.params;
   try {
-    const deletingResult = await tasksService.removeTask(taskId);
+    const deletingResult = await tasksService.remove(taskId);
     res.json(Task.toResponse(deletingResult));
   } catch (error) {
     res.status(404).send({

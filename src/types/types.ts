@@ -1,10 +1,5 @@
-type ItemsGetter<T> = {
-    (): T[] | Promise<T[]>
-    (id: string): T[] | Promise<T[]>
-}
-
 export interface CRUD<T> {
-    getAll: ItemsGetter<T>
+    getAll: (id?: string) => T[] | Promise<T[]>
     get: (id: string) => T | Promise<T>
     add: (obj: T) => T | Promise<T>
     put: (id: string, obj: T) => T | Promise<T>

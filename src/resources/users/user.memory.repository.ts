@@ -3,7 +3,7 @@ import { User, Task, CRUD } from '../../types/types';
 const { users, tasks } = require("../../data/data");
 
 /**
- * Object that is responsible for fetching data from data.js
+ * Object that is responsible for working with Users in the data.js file
  */
 const UsersMemoryRepository: CRUD<User> = {
   /**
@@ -42,7 +42,8 @@ const UsersMemoryRepository: CRUD<User> = {
     return user;
   },
   /**
-   * Removes a User by its id in data.js
+   * Removes a User by its id from data.js and nullifies the userId field
+   * in all Tasks that are bound to the User
    * @param id - The User's id
    * @returns An empty object
    */
