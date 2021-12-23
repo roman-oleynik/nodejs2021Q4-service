@@ -1,7 +1,7 @@
 import { Task, Board, CRUD } from '../../types/types';
 
-const { boards, tasks } = require("../../data/data");
-const { remove } = require("../tasks/task.memory.repository");
+const { boards, tasks } = require("../../data/data.ts");
+const { remove } = require("../tasks/task.memory.repository.ts");
 
 /**
  * Object that is responsible for working with Boards in the data.js file

@@ -1,6 +1,6 @@
 import { User } from '../../types/types';
 
-const usersRepo = require('./user.memory.repository');
+const usersRepo = require('./user.memory.repository.ts');
 
 /**
  * Makes an async call to UsersMemoryRepository in order to

@@ -1,6 +1,6 @@
 import { User, Task, CRUD } from '../../types/types';
 
-const { users, tasks } = require("../../data/data");
+const { users, tasks } = require("../../data/data.ts");
 
 /**
  * Object that is responsible for working with Users in the data.js file

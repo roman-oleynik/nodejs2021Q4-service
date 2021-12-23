@@ -1,8 +1,8 @@
 import { RequestObject, ResponseObject } from "../../types/types";
 
 const router = require('express').Router();
-const Task = require('./task.model');
-const tasksService = require('./task.service');
+const Task = require('./task.model.ts');
+const tasksService = require('./task.service.ts');
 
 // GET
 router.route('/').get(async (req: RequestObject, res: ResponseObject) => {
