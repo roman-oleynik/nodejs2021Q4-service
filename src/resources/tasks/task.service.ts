@@ -1,6 +1,6 @@
 import { Task } from "../../types/types";
 
-const tasksRepo = require('./task.memory.repository.ts');
+const tasksRepo = require('./task.memory.repository');
 
 /**
  * Makes an async call to TasksMemoryRepository in order to

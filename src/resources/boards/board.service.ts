@@ -1,6 +1,6 @@
 import { Board } from '../../types/types';
 
-const boardsRepo = require('./board.memory.repository.ts');
+const boardsRepo = require('./board.memory.repository');
 
 /**
  * Makes an async call to BoardsMemoryRepository in order to

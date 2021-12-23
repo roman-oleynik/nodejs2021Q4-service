@@ -1,6 +1,6 @@
 import { Task, CRUD } from '../../types/types';
 
-const { tasks } = require("../../data/data.ts");
+const { tasks } = require("../../data/data");
 
 /**
  * Object that is responsible for working with Tasks in the data.js file
