@@ -8,7 +8,7 @@
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2021,
+    "ecmaVersion": 2015,
     "ecmaFeatures": {
       "impliedStrict": true
     }
@@ -20,13 +20,24 @@
     "eslint:recommended",
     "plugin:node/recommended",
     "airbnb-base",
-    "prettier"
+    "prettier",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
     "import/extensions": "off",
+    "import/no-import-module-exports": "off",
     "linebreak-style": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "no-underscore-dangle": "off",
-    "import/prefer-default-export": "off"
-  }
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-var-requires": "off",
+    "tsdoc/syntax": "warn"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "@typescript-eslint/eslint-plugin",
+    "eslint-plugin-tsdoc"
+  ]
 }

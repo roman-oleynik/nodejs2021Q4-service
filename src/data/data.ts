@@ -1,4 +1,6 @@
-const users = [
+import { User, Board, Task } from "../types/types";
+
+const users: User[] = [
     {
         id: "123e4567-e89b-12d3-a456-426614174001",
         name: "Roman",
@@ -25,7 +27,7 @@ const users = [
     },
 ];
 
-const boards = [
+const boards: Board[] = [
     {
         id: "123e4567-e89b-12d3-a456-426614174004",
         title: "some board",
@@ -112,7 +114,7 @@ const boards = [
     },
 ];
 
-const tasks = [
+const tasks: Task[] = [
     {
         id: "123e4567-e89b-12d3-a456-426614174008",
         title: "Make a form for the website",

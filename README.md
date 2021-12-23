@@ -20,6 +20,9 @@ npm install
 ## Running application
 
 ```
+npx tsc
+```
+```
 npm start
 ```
 
