@@ -2,8 +2,12 @@ const { LOGGING_LEVEL } = require('../common/config');
 import {RequestObject, ResponseObject} from "../types/types";
 const process = require("process");
 const onFinished = require('on-finished');
+var fs = require('fs');
 
 type LoggingLevel = "0" | "1" | "2" | "3" | "4";
+
+const writeStream = fs.createWriteStream("./output.txt");
+
 
 class Logger {
     protected readonly level: LoggingLevel = LOGGING_LEVEL as LoggingLevel;
@@ -11,6 +15,8 @@ class Logger {
     protected request: RequestObject;
     protected response: ResponseObject;
     protected next: Function;
+
+    protected data: string = "";
 
     constructor(request: RequestObject, response: ResponseObject, next: Function) {
         this.request = request;
@@ -35,25 +41,56 @@ class Logger {
     }
 
     logParams(): void {
-        console.info("Params: " + JSON.stringify(this.request.params));
+        if (+this.level > 1) {
+            const {params} = this.request;
+            console.info("Params: " + JSON.stringify(params));
+            writeStream.write("Params: " + JSON.stringify(params) + "\n");
+        }
+        
     }
 
     logURL(): void {
-        console.info("URL: " + this.request.originalUrl);
+        if (+this.level > 1) {
+            const {originalUrl} = this.request;
+            console.info("URL: " + originalUrl);
+            writeStream.write("URL: " + JSON.stringify(originalUrl) + "\n");
+        }
+        
     }
 
     logBody(): void {
-        console.info("Body: " + JSON.stringify(this.request.body));
+        if (+this.level > 1) {
+            const {body} = this.request;
+            console.info("Body: " + JSON.stringify(body));
+            writeStream.write("Body: " + JSON.stringify(body) + "\n");
+        }
+        
     }
 
     logLoggingLevel(): void {
-        console.info("The level of logging is: " + this.level);
+        if (+this.level > 1) {
+            const {level} = this;
+            console.info("The level of logging is: " + level);
+            writeStream.write("The level of logging is: " + JSON.stringify(level) + "\n");
+        }
+        
     }
 
     logStatus(res?: ResponseObject): void {
-        if (res) {
-            console.info("Response status: " + res.statusCode);
+        if (res && +this.level > 1) {
+            const {statusCode} = res;
+            console.info("Response status: " + statusCode);
+            writeStream.write("Response status: " + JSON.stringify(statusCode) + "\n\n");
         }
+    }
+
+    logError(error: string): void {
+        console.info("Params: " + JSON.stringify(this.request.params));
+        console.info("URL: " + JSON.stringify(this.request.originalUrl));
+        console.info("Body: " + JSON.stringify(this.request.body));
+        console.info("Response status: " + this.response.statusCode);
+        console.info("Logging level: " + this.level);
+        console.error("Error: " + error);
     }
 }
 

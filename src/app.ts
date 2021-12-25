@@ -7,10 +7,12 @@ const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
+const { LOGGING_LEVEL } = require('./common/config');
+var fs = require('fs');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
-
+type LoggingLevel = "0" | "1" | "2" | "3" | "4";
 
 const Logger = require("./loggers/logger");
 const loggerInstance = new Logger();
@@ -33,13 +35,22 @@ app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards/:boardId/tasks', taskRouter);
 
-app.use(function (err: Error, req: RequestObject, res: ResponseObject, next: Function) {
-  console.error(err.message);
+const errorsWriteStream = fs.createWriteStream("./errors.txt");
+
+app.use(function (error: Error, req: RequestObject, res: ResponseObject, next: Function) {
   next();
-  // onFinished(res, function (err: Error, res: ResponseObject) {
-  //   console.error(req.originalUrl);
-  //   console.error(res.statusCode);
-  // })
+  onFinished(res, function (err: Error, res: ResponseObject) {
+    const loggerInstance = new Logger(req, res);
+    const level: LoggingLevel = LOGGING_LEVEL as LoggingLevel;
+    loggerInstance.logError(error.message);
+    errorsWriteStream.write(`
+      Logging level: ${level}
+      Error: ${error.message}
+      URL: ${JSON.stringify(req.originalUrl)}
+      Response status: ${JSON.stringify(res.statusCode)}
+      \n
+    `);
+  })
 });
 
 loggerInstance.handleUncaughtExceptions();
