@@ -62,4 +62,5 @@ export type ResponseObject = {
     send: (arg: string | StatusObject) => void
     json: (arg: TrelloData) => void
     status: (arg: number) => ResponseObject
+    statusCode: number
 }
