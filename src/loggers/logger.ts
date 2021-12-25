@@ -1,6 +1,7 @@
 const { LOGGING_LEVEL } = require('../common/config');
 import {RequestObject, ResponseObject} from "../types/types";
 const process = require("process");
+const onFinished = require('on-finished');
 
 type LoggingLevel = "0" | "1" | "2" | "3" | "4";
 
@@ -9,32 +10,50 @@ class Logger {
 
     protected request: RequestObject;
     protected response: ResponseObject;
+    protected next: Function;
 
-    constructor(request: RequestObject, response: ResponseObject) {
+    constructor(request: RequestObject, response: ResponseObject, next: Function) {
         this.request = request;
         this.response = response;
+        this.next = next;
     }
 
-    log(): void {
-        process
-            .on('uncaughtException', (err: Error) => {
-                // process.stderr.write(err, 'Uncaught Exception thrown');
-                process.exit(1);
-            });
-        throw Error("Oops");
+    handleUncaughtExceptions() {
+        process.on('uncaughtException', (error: Error, origin: string) => {
+            console.error(`captured error: ${error.message}`);
+            // fs.writeFileSync...
+            process.exit(1);
+        });
+    }
 
-        console.info("The level of logging is: " + this.level);
-        console.info("URL: " + this.request.originalUrl);
+    handleUnhandledRejections() {
+        process.on('unhandledRejection', () => {
+            console.error(`captured error`);
+            // fs.writeFileSync...
+            process.exit(1);
+        });
+    }
+
+    logParams(): void {
         console.info("Params: " + JSON.stringify(this.request.params));
-        console.info("Body: " + JSON.stringify(this.request.body));
-        console.info("Response status: " + this.response.statusCode);
     }
-    async handleErrors(callback: Function) {
-        
 
-            callback();
-            this.log();
-        
+    logURL(): void {
+        console.info("URL: " + this.request.originalUrl);
+    }
+
+    logBody(): void {
+        console.info("Body: " + JSON.stringify(this.request.body));
+    }
+
+    logLoggingLevel(): void {
+        console.info("The level of logging is: " + this.level);
+    }
+
+    logStatus(res?: ResponseObject): void {
+        if (res) {
+            console.info("Response status: " + res.statusCode);
+        }
     }
 }
 
