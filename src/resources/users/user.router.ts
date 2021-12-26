@@ -7,7 +7,6 @@ const usersService = require('./user.service');
 const Logger = require("../../loggers/logger");
 const {validate} = require('uuid');
 const onFinished = require('on-finished');
-const bodyParser = require("body-parser");
 const { isUserValid } = require("../../validators/validator");
 
 router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
@@ -93,7 +92,7 @@ router.route('/:userId').delete(async (req: RequestObject, res: ResponseObject, 
     next(new Error("User isn't found"));
   } else {
     await usersService.remove(userId);
-    res.json(User.toResponse({}));
+    res.status(204).json(User.toResponse({}));
     next();
   }
 });

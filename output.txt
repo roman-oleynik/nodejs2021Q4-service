@@ -1,96 +1,18 @@
-URL: "/users"
-The level of logging is: "4"
-Params: {}
-Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
-Response status: 201
-
-URL: "/users"
+URL: "/boards"
 The level of logging is: "4"
 Params: {}
 Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
 Response status: 200
 
-URL: "/users"
-The level of logging is: "4"
-Params: {}
-Body: {}
-Response status: 200
-
-URL: "/users"
+URL: "/boards/123e4567-e89b-12d3-a456-426614174004/tasks"
 The level of logging is: "4"
 Params: {}
 Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
-Response status: 201
-
-URL: "/users/3e1c78da-dbd5-4c07-92c4-8a00979e7403"
-The level of logging is: "4"
-Params: {"userId":"3e1c78da-dbd5-4c07-92c4-8a00979e7403"}
-Body: {}
-Response status: 200
-
-URL: "/users/3e1c78da-dbd5-4c07-92c4-8a00979e7403"
-The level of logging is: "4"
-Params: {"userId":"3e1c78da-dbd5-4c07-92c4-8a00979e7403"}
-Body: {}
-Response status: 200
-
-URL: "/users"
+URL: "/boards/123e4567-e89b-12d3-a456-426614174004/tasks"
 The level of logging is: "4"
 Params: {}
 Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
-Response status: 201
-
-URL: "/users/702026e8-f94a-4416-8cf4-4a8557d664dc"
-The level of logging is: "4"
-Params: {"userId":"702026e8-f94a-4416-8cf4-4a8557d664dc"}
-Body: {}
 Response status: 200
 
-URL: "/users"
-The level of logging is: "4"
-Params: {}
-Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
-Response status: 201
-
-URL: "/users/854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"
-The level of logging is: "4"
-Params: {"userId":"854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"}
-Body: {"name":"Autotest updated TEST_USER","login":"test_user","password":"T35t_P@55w0rd","id":"854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"}
-Response status: 200
-
-URL: "/users/854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"
-The level of logging is: "4"
-Params: {"userId":"854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"}
-Body: {}
-Response status: 200
-
-URL: "/users/854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"
-The level of logging is: "4"
-Params: {"userId":"854bb5fb-8c7c-40fe-8bb5-fd3fd86e84e2"}
-Body: {}
-Response status: 200
-
-URL: "/users"
-The level of logging is: "4"
-Params: {}
-Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
-Response status: 201
-
-URL: "/users/32f7dce4-45b3-4274-93c7-4bbbc0cf4cb1"
-The level of logging is: "4"
-Params: {"userId":"32f7dce4-45b3-4274-93c7-4bbbc0cf4cb1"}
-Body: {}
-Response status: 200
-
-URL: "/users"
-The level of logging is: "4"
-Params: {}
-Body: {"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}
-Response status: 201
-
-URL: "/users/bbd0a015-4332-4fb6-87a2-992a2fa88161"
-The level of logging is: "4"
-Params: {"userId":"bbd0a015-4332-4fb6-87a2-992a2fa88161"}
-Body: {}
 Response status: 200
 

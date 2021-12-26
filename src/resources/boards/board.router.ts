@@ -3,50 +3,97 @@ import {RequestObject, ResponseObject} from "../../types/types";
 const router = require('express').Router();
 const Board = require('./board.model');
 const boardsService = require('./board.service');
+const Logger = require("../../loggers/logger");
+const {validate} = require('uuid');
+const onFinished = require('on-finished');
+const { isBoardValid } = require("../../validators/validator");
+
+router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
+  next();
+  const logger = new Logger(req, res);
+  logger.logURL();
+  logger.logLoggingLevel();
+  logger.logParams();
+  logger.logBody();
+
+  onFinished(res, function (err: Error, res: ResponseObject) {
+    logger.logStatus(res);
+  });
+})
 // GET
-router.route('/').get(async (req: RequestObject, res: ResponseObject) => {
+router.route('/').get(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const boards = await boardsService.getAll();
   res.json(boards.map(Board.toResponse));
+  next();
 });
 
-router.route('/:boardId').get(async (req: RequestObject, res: ResponseObject) => {
+router.route('/:boardId').get(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const { boardId } = await req.params;
-  try {
+  const board = await boardsService.get(boardId);
+  if (!validate(boardId)) {
+    res.status(400).send("Board's id is invalid");
+    next(new Error("Board's id is invalid"));
+  } else if (validate(boardId) && !board) {
+    res.status(404).send("Board is not found");
+    next(new Error("Board is not found"));
+  } else {
     const board = await boardsService.get(boardId);
-    res.json(Board.toResponse(board));
-  } catch (err) {
-    res.status(404).send({
-      status: 404
-    })
+    res.status(200).json(Board.toResponse(board));
+    next();
   }
 });
 
 // POST
-router.route('/').post(async (req: RequestObject, res: ResponseObject) => {
+router.route('/').post(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const { body } = req;
   const addedBoard = new Board({...body});
-  boardsService.add(addedBoard);
-  res.status(201).json(Board.toResponse(addedBoard));
+
+  if (!isBoardValid(addedBoard)) {
+    res.status(400).send("Board is invalid");
+    next(new Error("Board is invalid"));
+  } else {
+    boardsService.add(addedBoard);
+    res.status(201).json(Board.toResponse(addedBoard));
+    next();
+  }
 });
 
 // PUT
-router.route('/:boardId').put(async (req: RequestObject, res: ResponseObject) => {
+router.route('/:boardId').put(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const { boardId } = await req.params;
   const { body } = req;
-  await boardsService.put(boardId, body);
-  res.status(200).json(Board.toResponse(body));
+  const board = boardsService.get(boardId);
+  if (!validate(boardId)) {
+    res.status(400).send("UsBoarder's id is invalid");
+    next(new Error("Board's id is invalid"));
+  } else if (board && !isBoardValid(body)) {
+    res.status(400).send("Board's body is invalid");
+    next(new Error("Board's body is invalid"));
+  } else if (!board) {
+    res.status(404).send("Board isn't found");
+    next(new Error("Board isn't found"));
+  } else {
+    await boardsService.put(boardId, body);
+    res.status(200).json(Board.toResponse(body));
+    next();
+  }
 });
 
 // DELETE
-router.route('/:boardId').delete(async (req: RequestObject, res: ResponseObject) => {
+router.route('/:boardId').delete(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const { boardId } = await req.params;
-  try {
-    const deletingResult = await boardsService.remove(boardId);
-    res.json(Board.toResponse(deletingResult));
-  } catch (error) {
-    res.status(404).send({
-      status: 404
-    })
+  const board = boardsService.get(boardId);
+
+  if (!validate(boardId)) {
+    res.status(400).send("Board's id is invalid");
+    next(new Error("Board's id is invalid"));
+  } else if (!board) {
+    res.status(404).send("Board isn't found");
+    next(new Error("Board isn't found"));
+  } else {
+    await boardsService.remove(boardId);
+    res.status(204).json(Board.toResponse({}));
+    next();
   }
 });
 
