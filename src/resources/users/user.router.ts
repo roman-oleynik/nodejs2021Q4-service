@@ -1,15 +1,15 @@
-import {RequestObject, ResponseObject} from "../../types/types";
+import {RequestObject, ResponseObject,NextFunc} from "../../types/types";
 
 
 const router = require('express').Router();
+const {validate} = require('uuid');
+const onFinished = require('on-finished');
 const User = require('./user.model');
 const usersService = require('./user.service');
 const Logger = require("../../loggers/logger");
-const {validate} = require('uuid');
-const onFinished = require('on-finished');
 const { isUserValid } = require("../../validators/validator");
 
-router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
+router.use((req: RequestObject, res: ResponseObject, next: NextFunc) => {
   next();
   const logger = new Logger(req, res);
   logger.logURL();
@@ -17,19 +17,19 @@ router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
   logger.logParams();
   logger.logBody();
 
-  onFinished(res, function (err: Error, res: ResponseObject) {
-    logger.logStatus(res);
+  onFinished(res, (err: Error, response: ResponseObject) => {
+    logger.logStatus(response);
   });
 })
 // GET
-router.route('/').get(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/').get(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
     const users = await usersService.getAll();
     // map user fields to exclude secret fields like "password"
     res.json(users.map(User.toResponse));
     next();
 });
 
-router.route('/:userId').get(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/:userId').get(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { userId } = await req.params;
   const user = await usersService.get(userId);
   if (!validate(userId)) {
@@ -44,7 +44,7 @@ router.route('/:userId').get(async (req: RequestObject, res: ResponseObject, nex
   }
 });
 // POST
-router.route('/').post(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/').post(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { body } = await req;
   const addedUser = new User({...body});
 
@@ -59,7 +59,7 @@ router.route('/').post(async (req: RequestObject, res: ResponseObject, next: Fun
 });
 
 // PUT
-router.route('/:userId').put(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/:userId').put(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { userId } = await req.params;
   const { body } = req;
   const user = usersService.get(userId);
@@ -80,7 +80,7 @@ router.route('/:userId').put(async (req: RequestObject, res: ResponseObject, nex
 });
 
 // DELETE
-router.route('/:userId').delete(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/:userId').delete(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { userId } = await req.params;
   const user = usersService.get(userId);
 

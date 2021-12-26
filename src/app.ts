@@ -1,23 +1,24 @@
-import {RequestObject, ResponseObject} from "./types/types";
+import {RequestObject, ResponseObject, NextFunc} from "./types/types";
 
 const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
+const fs = require('fs');
+const onFinished = require('on-finished');
+const bodyParser = require("body-parser");
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const { LOGGING_LEVEL } = require('./common/config');
-var fs = require('fs');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 type LoggingLevel = "0" | "1" | "2" | "3" | "4";
 
 const Logger = require("./loggers/logger");
-const loggerInstance = new Logger();
-const onFinished = require('on-finished');
-const bodyParser = require("body-parser");
+
+const logger = new Logger();
 
 app.use(express.json());
 
@@ -38,24 +39,24 @@ app.use('/boards/:boardId/tasks', taskRouter);
 
 const errorsWriteStream = fs.createWriteStream("./errors.txt");
 
-app.use(function (error: Error, req: RequestObject, res: ResponseObject, next: Function) {
+app.use((error: Error, req: RequestObject, res: ResponseObject, next: NextFunc) => {
   next();
-  onFinished(res, function (err: Error, res: ResponseObject) {
-    const loggerInstance = new Logger(req, res);
+  onFinished(res, (err: Error, response: ResponseObject) => {
+    const loggerInstance = new Logger(req, response);
     const level: LoggingLevel = LOGGING_LEVEL as LoggingLevel;
     loggerInstance.logError(error.message);
     errorsWriteStream.write(`
       Logging level: ${level}
       Error: ${error.message}
       URL: ${JSON.stringify(req.originalUrl)}
-      Response status: ${JSON.stringify(res.statusCode)}
+      Response status: ${JSON.stringify(response.statusCode)}
       \n
     `);
   })
 });
 
-loggerInstance.handleUncaughtExceptions();
-loggerInstance.handleUnhandledRejections();
+logger.handleUncaughtExceptions();
+logger.handleUnhandledRejections();
 
 // For x-check purposes
 // throw Error('Oops!');

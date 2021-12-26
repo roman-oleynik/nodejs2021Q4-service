@@ -1,15 +1,15 @@
-import { RequestObject, ResponseObject } from "../../types/types";
+import { RequestObject, ResponseObject ,NextFunc} from "../../types/types";
 
 const router = require('express').Router();
-const Task = require('./task.model');
-const tasksService = require('./task.service');
-const Logger = require("../../loggers/logger");
 const {validate} = require('uuid');
 const onFinished = require('on-finished');
 const bodyParser = require("body-parser");
+const Task = require('./task.model');
+const tasksService = require('./task.service');
+const Logger = require("../../loggers/logger");
 const { isTaskValid } = require("../../validators/validator");
 
-router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
+router.use((req: RequestObject, res: ResponseObject, next: NextFunc) => {
   next();
   const logger = new Logger(req, res);
   logger.logURL();
@@ -17,20 +17,20 @@ router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
   logger.logParams();
   logger.logBody();
 
-  onFinished(res, function (err: Error, res: ResponseObject) {
-    logger.logStatus(res);
+  onFinished(res, (err: Error, response: ResponseObject) => {
+    logger.logStatus(response);
   });
 })
 
 // GET
-router.route('/').get(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/').get(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const boardId = req.baseUrl.split("/").slice(2,3).join("");
   const tasks = await tasksService.getAll(boardId);
   res.json(tasks.map(Task.toResponse));
   next();
 });
 
-router.route('/:taskId').get(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/:taskId').get(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { taskId } = await req.params;
   const task = await tasksService.get(taskId);
   if (!validate(taskId)) {
@@ -40,14 +40,13 @@ router.route('/:taskId').get(async (req: RequestObject, res: ResponseObject, nex
     res.status(404).send("Task is not found");
     next(new Error("Task is not found"));
   } else {
-    const task = await tasksService.get(taskId);
     res.status(200).json(Task.toResponse(task));
     next();
   }
 });
 
 // POST
-router.route('/').post(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/').post(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { body } = req;
   const boardId = req.baseUrl.split("/").slice(2,3).join("");
   const addedTask = new Task({...body, boardId});
@@ -63,7 +62,7 @@ router.route('/').post(async (req: RequestObject, res: ResponseObject, next: Fun
 });
 
 // PUT
-router.route('/:taskId').put(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/:taskId').put(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { taskId } = await req.params;
   const { body } = req;
   const task = tasksService.get(taskId);
@@ -84,7 +83,7 @@ router.route('/:taskId').put(async (req: RequestObject, res: ResponseObject, nex
 });
 
 // DELETE
-router.route('/:taskId').delete(async (req: RequestObject, res: ResponseObject, next: Function) => {
+router.route('/:taskId').delete(async (req: RequestObject, res: ResponseObject, next: NextFunc) => {
   const { taskId } = await req.params;
   const task = tasksService.get(taskId);
   if (!validate(taskId)) {

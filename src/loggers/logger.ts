@@ -1,8 +1,9 @@
-const { LOGGING_LEVEL } = require('../common/config');
-import {RequestObject, ResponseObject} from "../types/types";
+import {RequestObject, ResponseObject, NextFunc} from "../types/types";
+
 const process = require("process");
 const onFinished = require('on-finished');
-var fs = require('fs');
+const fs = require('fs');
+const { LOGGING_LEVEL } = require('../common/config');
 
 type LoggingLevel = "0" | "1" | "2" | "3" | "4";
 
@@ -13,12 +14,14 @@ class Logger {
     protected readonly level: LoggingLevel = LOGGING_LEVEL as LoggingLevel;
 
     protected request: RequestObject;
+
     protected response: ResponseObject;
-    protected next: Function;
 
-    protected data: string = "";
+    protected next: NextFunc;
 
-    constructor(request: RequestObject, response: ResponseObject, next: Function) {
+    protected data = "";
+
+    constructor(request: RequestObject, response: ResponseObject, next: NextFunc) {
         this.request = request;
         this.response = response;
         this.next = next;
@@ -43,8 +46,8 @@ class Logger {
     logParams(): void {
         if (+this.level > 1) {
             const {params} = this.request;
-            console.info("Params: " + JSON.stringify(params));
-            writeStream.write("Params: " + JSON.stringify(params) + "\n");
+            console.info(`Params: ${  JSON.stringify(params)}`);
+            writeStream.write(`Params: ${  JSON.stringify(params)  }\n`);
         }
         
     }
@@ -52,8 +55,8 @@ class Logger {
     logURL(): void {
         if (+this.level > 1) {
             const {originalUrl} = this.request;
-            console.info("URL: " + originalUrl);
-            writeStream.write("URL: " + JSON.stringify(originalUrl) + "\n");
+            console.info(`URL: ${  originalUrl}`);
+            writeStream.write(`URL: ${  JSON.stringify(originalUrl)  }\n`);
         }
         
     }
@@ -61,8 +64,8 @@ class Logger {
     logBody(): void {
         if (+this.level > 1) {
             const {body} = this.request;
-            console.info("Body: " + JSON.stringify(body));
-            writeStream.write("Body: " + JSON.stringify(body) + "\n");
+            console.info(`Body: ${  JSON.stringify(body)}`);
+            writeStream.write(`Body: ${  JSON.stringify(body)  }\n`);
         }
         
     }
@@ -70,8 +73,8 @@ class Logger {
     logLoggingLevel(): void {
         if (+this.level > 1) {
             const {level} = this;
-            console.info("The level of logging is: " + level);
-            writeStream.write("The level of logging is: " + JSON.stringify(level) + "\n");
+            console.info(`The level of logging is: ${  level}`);
+            writeStream.write(`The level of logging is: ${  JSON.stringify(level)  }\n`);
         }
         
     }
@@ -79,18 +82,18 @@ class Logger {
     logStatus(res?: ResponseObject): void {
         if (res && +this.level > 1) {
             const {statusCode} = res;
-            console.info("Response status: " + statusCode);
-            writeStream.write("Response status: " + JSON.stringify(statusCode) + "\n\n");
+            console.info(`Response status: ${  statusCode}`);
+            writeStream.write(`Response status: ${  JSON.stringify(statusCode)  }\n\n`);
         }
     }
 
     logError(error: string): void {
-        console.info("Params: " + JSON.stringify(this.request.params));
-        console.info("URL: " + JSON.stringify(this.request.originalUrl));
-        console.info("Body: " + JSON.stringify(this.request.body));
-        console.info("Response status: " + this.response.statusCode);
-        console.info("Logging level: " + this.level);
-        console.error("Error: " + error);
+        console.info(`Params: ${  JSON.stringify(this.request.params)}`);
+        console.info(`URL: ${  JSON.stringify(this.request.originalUrl)}`);
+        console.info(`Body: ${  JSON.stringify(this.request.body)}`);
+        console.info(`Response status: ${  this.response.statusCode}`);
+        console.info(`Logging level: ${  this.level}`);
+        console.error(`Error: ${  error}`);
     }
 }
 

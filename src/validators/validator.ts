@@ -1,5 +1,6 @@
-const { validate } = require('uuid');
 import {User, Board, Task} from "../types/types";
+
+const { validate } = require('uuid');
 
 const isUserValid: (person: User) => boolean = (person) => {
     if (!validate(person.id)) {

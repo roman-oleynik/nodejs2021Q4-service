@@ -67,3 +67,5 @@ export type ResponseObject = {
     setHeader: (key: string, value: string) => void
 
 }
+
+export type NextFunc = (arg?: Error) => void
