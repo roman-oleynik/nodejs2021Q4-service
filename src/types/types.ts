@@ -64,4 +64,6 @@ export type ResponseObject = {
     status: (arg: number) => ResponseObject
     statusCode: number
     render: (arg: string) => void
+    setHeader: (key: string, value: string) => void
+
 }

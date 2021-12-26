@@ -23,7 +23,7 @@ class UserCreator {
     id = uuid(),
     name = 'USER',
     login = 'user',
-    password = 'P@55w0rd'
+    password = 'P@5rd'
   }: User = nullUser) {
     this.id = id;
     this.name = name;

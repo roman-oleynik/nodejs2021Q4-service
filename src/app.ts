@@ -17,6 +17,7 @@ type LoggingLevel = "0" | "1" | "2" | "3" | "4";
 const Logger = require("./loggers/logger");
 const loggerInstance = new Logger();
 const onFinished = require('on-finished');
+const bodyParser = require("body-parser");
 
 app.use(express.json());
 
@@ -30,7 +31,7 @@ app.use('/', (req: RequestObject, res: ResponseObject, next: () => void) => {
   }
   next();
 });
-
+app.use(bodyParser.json());
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards/:boardId/tasks', taskRouter);

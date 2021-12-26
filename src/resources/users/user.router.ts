@@ -7,6 +7,8 @@ const usersService = require('./user.service');
 const Logger = require("../../loggers/logger");
 const {validate} = require('uuid');
 const onFinished = require('on-finished');
+const bodyParser = require("body-parser");
+const { isUserValid } = require("../../validators/validator");
 
 router.use(function (req: RequestObject, res: ResponseObject, next: Function) {
   next();
@@ -41,36 +43,59 @@ router.route('/:userId').get(async (req: RequestObject, res: ResponseObject, nex
     res.status(200).json(User.toResponse(user));
     next();
   }
-  
-
 });
-
 // POST
 router.route('/').post(async (req: RequestObject, res: ResponseObject, next: Function) => {
-  const { body } = req;
+  const { body } = await req;
   const addedUser = new User({...body});
-  usersService.add(addedUser);
-  res.status(201).json(User.toResponse(addedUser));
-  next();
 
+  if (!isUserValid(addedUser)) {
+    res.status(400).send("User is invalid");
+    next(new Error("User is invalid"));
+  } else {
+    usersService.add(addedUser);
+    res.status(201).json(User.toResponse(addedUser));
+    next();
+  }
 });
 
 // PUT
 router.route('/:userId').put(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const { userId } = await req.params;
   const { body } = req;
-  await usersService.put(userId, body);
-  res.status(200).json(User.toResponse(body));
-  next();
-
+  const user = usersService.get(userId);
+  if (!validate(userId)) {
+    res.status(400).send("User's id is invalid");
+    next(new Error("User's id is invalid"));
+  } else if (user && !isUserValid(body)) {
+    res.status(400).send("User's body is invalid");
+    next(new Error("User's body is invalid"));
+  } else if (!user) {
+    res.status(404).send("User isn't found");
+    next(new Error("User isn't found"));
+  } else {
+    await usersService.put(userId, body);
+    res.status(200).json(User.toResponse(body));
+    next();
+  }
 });
 
 // DELETE
 router.route('/:userId').delete(async (req: RequestObject, res: ResponseObject, next: Function) => {
   const { userId } = await req.params;
-  await usersService.remove(userId);
-  res.json(User.toResponse({}));
-  next();
+  const user = usersService.get(userId);
+
+  if (!validate(userId)) {
+    res.status(400).send("User's id is invalid");
+    next(new Error("User's id is invalid"));
+  } else if (!user) {
+    res.status(404).send("User isn't found");
+    next(new Error("User isn't found"));
+  } else {
+    await usersService.remove(userId);
+    res.json(User.toResponse({}));
+    next();
+  }
 });
 
 
