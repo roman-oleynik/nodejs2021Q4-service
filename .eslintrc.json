@@ -33,7 +33,11 @@
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-var-requires": "off",
-    "tsdoc/syntax": "warn"
+    "tsdoc/syntax": "warn",
+    "import/no-unresolved": "off",
+    "node/no-missing-require": "off",
+    "class-methods-use-this": "off",
+    "node/no-missing-import": "off"
   },
   "plugins": [
     "@typescript-eslint",
